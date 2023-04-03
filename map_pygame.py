@@ -2,18 +2,7 @@ import pygame
 import sys
 import requests
 import os
-
-
-class MapParams(object):
-    def __init__(self):
-        self.lat = 53.642277  # Координаты центра карты на старте. БГУ
-        self.lon = 55.941746
-        self.zoom = 14  # Масштаб карты на старте. Изменяется от 1 до 19
-        self.type = "map"  # Другие значения "sat", "sat,skl"
-
-    # Преобразование координат в параметр ll, требуется без пробелов, через запятую и без скобок
-    def get_ll(self):
-        return str(self.lon) + "," + str(self.lat)
+import Map
 
 
 # Создание карты с соответствующими параметрами.
@@ -41,11 +30,18 @@ def main():
     # Инициализируем pygame
     pygame.init()
     screen = pygame.display.set_mode((600, 450))
-    mp = MapParams()
-    while True:
-        event = pygame.event.wait()
-        if event.type == pygame.QUIT:  # Выход из программы
-            break
+    mp = Map.MapParams()
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:  # Выход из программы
+                running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_PAGEDOWN:  # Изменение масштаба
+                    mp.change_zoom(False)
+                if event.key == pygame.K_PAGEUP:
+                    mp.change_zoom()
+
         # Создаем файл
         map_file = load_map(mp)
         # Рисуем картинку, загружаемую из только что созданного файла.
