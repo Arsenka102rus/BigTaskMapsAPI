@@ -7,11 +7,14 @@ import Map
 
 # Создание карты с соответствующими параметрами.
 def load_map(mp):
-    map_request = "http://static-maps.yandex.ru/1.x/?ll={ll}&z={z}&l={type}".format(ll=mp.get_ll(), z=mp.zoom, type=mp.type)
-    response = requests.get(map_request)
+    search_server = "https://static-maps.yandex.ru/1.x/"
+    search_params = {"ll": mp.get_ll(),
+                     "z": mp.zoom,
+                     "l": mp.map_type}
+    response = requests.get(search_server, params=search_params)
     if not response:
         print("Ошибка выполнения запроса:")
-        print(map_request)
+        print(response.url)
         print("Http статус:", response.status_code, "(", response.reason, ")")
         sys.exit(1)
 
@@ -37,10 +40,9 @@ def main():
             if event.type == pygame.QUIT:  # Выход из программы
                 running = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_PAGEDOWN:  # Изменение масштаба
-                    mp.change_zoom(False)
-                if event.key == pygame.K_PAGEUP:
-                    mp.change_zoom()
+                mp.update(event)
+                print(mp.zoom)
+                print(mp.get_ll())
 
         # Создаем файл
         map_file = load_map(mp)
@@ -49,7 +51,6 @@ def main():
         pygame.display.flip()
         os.remove(map_file)
     pygame.quit()
-    # Удаляем файл с изображением.
 
 
 if __name__ == "__main__":
