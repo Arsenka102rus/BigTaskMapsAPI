@@ -6,6 +6,7 @@ class MapParams(object):
         self.lat = 53.642277  # Координаты центра карты на старте. БГУ
         self.lon = 55.941746
         self.zoom = 2  # Масштаб карты на старте. Изменяется от 1 до 19
+        self.map_types = ["map", "sat", "sat,skl"]
         self.map_type = "map"  # Другие значения "sat", "sat,skl"
         self.update_step()
 
