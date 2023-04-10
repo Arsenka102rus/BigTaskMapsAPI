@@ -38,7 +38,7 @@ def main():
     screen = pygame.display.set_mode((600, 450))
     mp = Map.MapParams()
     manager = pygame_gui.UIManager((600, 450))
-    switcher = map_switcher.Swticher(relative_rect=pygame.Rect((470, 10), (130, 25)), manager=manager, text="Сменить режим")
+    switcher = map_switcher.Swticher(relative_rect=pygame.Rect((470, 10), (100, 25)), manager=manager, text="Спутник")
     running = True
     while running:
         for event in pygame.event.get():
@@ -51,6 +51,7 @@ def main():
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     switcher.change_map_type(mp)
+
             manager.process_events(event)
 
         # Создаем файл
